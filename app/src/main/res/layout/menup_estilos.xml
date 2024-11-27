@@ -1,0 +1,72 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCC898"
+    tools:context=".MenuPrincipal">
+
+    <ImageView
+        android:id="@+id/carta"
+        android:layout_width="467dp"
+        android:layout_height="632dp"
+        android:layout_marginTop="144dp"
+        android:contentDescription="TODO"
+        android:src="@drawable/carta_menup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="539dp"
+        android:layout_height="164dp"
+        android:background="#D3D3D3"
+        android:backgroundTint="#483928"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/coleccion"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Coleccion"
+            android:src="@drawable/cartas" />
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Menu Principal"
+            android:src="@drawable/home" />
+
+        <ImageView
+            android:id="@+id/tienda"
+            android:layout_width="14dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Tienda"
+            android:src="@drawable/tienda" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAbrirSobre"
+        android:layout_width="343dp"
+        android:layout_height="152dp"
+        android:backgroundTint="#483928"
+        android:text="Abrir sobre"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carta" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
