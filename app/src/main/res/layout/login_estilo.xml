@@ -8,17 +8,21 @@
     tools:context=".Login">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="439dp"
-        android:layout_height="627dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="#D6AC5D"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="270dp"
-        tools:ignore="MissingConstraints">
+        android:alpha=""
+        app:layout_constraintWidth_min="300dp"
+        app:layout_constraintHeight_min="500dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="681dp"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -48,16 +52,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:hint="Password"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:paddingBottom="16dp"
                 android:textSize="35sp" />
 
             <Button
                 android:id="@+id/btnAcceder"
-                android:layout_width="374dp"
-                android:layout_height="98dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
-                android:layout_marginLeft="15dp"
                 android:backgroundTint="#483928"
                 android:text="Acceder"
                 android:textColor="#FFFFFF"
