@@ -122,4 +122,24 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         }
         db.update("cartas", values, "jugador = ?", arrayOf(carta.jugador))
     }
+
+    fun getRandomCartas(limit: Int): List<String> {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("""
+        SELECT imagen FROM cartas
+        ORDER BY RANDOM() LIMIT ?
+    """, arrayOf(limit.toString())) // Seleccionamos limit cartas aleatorias
+
+        val images = mutableListOf<String>()
+        if (cursor.moveToFirst()) {
+            do {
+                images.add(cursor.getString(cursor.getColumnIndexOrThrow("imagen")))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return images
+    }
+
+
+
 }

@@ -1,41 +1,40 @@
 package com.proyectosobres
 
-
+import DBcontrol
 import android.app.Activity
 import android.os.Bundle
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 class SobreAbierto : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sobreabierto_estilo)
 
-        // Obtener las imagenes
-        val imagen1 = findViewById<ImageView>(R.id.imagen1)
-        val imagen2 = findViewById<ImageView>(R.id.imagen2)
-        val imagen3 = findViewById<ImageView>(R.id.imagen3)
-        val imagen4 = findViewById<ImageView>(R.id.imagen4)
-        val imagen5 = findViewById<ImageView>(R.id.imagen5)
+        val dbControl = DBcontrol(this)
+        val imageViews = listOf(
+            findViewById<ImageView>(R.id.image1),
+            findViewById<ImageView>(R.id.image2),
+            findViewById<ImageView>(R.id.image3),
+            findViewById<ImageView>(R.id.image4),
+            findViewById<ImageView>(R.id.image5)
+        )
 
-        // Añadir listener para la ocultacion de estas
-        imagen1.setOnClickListener {
-            imagen1.visibility = ImageView.INVISIBLE
-        }
+        // Obtener 5 cartas aleatorias
+        val images = dbControl.getRandomCartas(5)
 
-        imagen2.setOnClickListener {
-            imagen2.visibility = ImageView.INVISIBLE
-        }
+        // Mostrar las imágenes en los ImageViews
+        for (i in images.indices) {
+            Glide.with(this)
+                .load(images[i])
+                .placeholder(R.drawable.carta_menup)
+                .error(R.drawable.carta_menup)
+                .into(imageViews[i])
 
-        imagen3.setOnClickListener {
-            imagen3.visibility = ImageView.INVISIBLE
-        }
-
-        imagen4.setOnClickListener {
-            imagen4.visibility = ImageView.INVISIBLE
-        }
-
-        imagen5.setOnClickListener {
-            imagen5.visibility = ImageView.INVISIBLE
+            imageViews[i].setOnClickListener {
+                it.visibility = ImageView.INVISIBLE // Hacer invisible la imagen cuando se toque
+            }
         }
     }
 }
+

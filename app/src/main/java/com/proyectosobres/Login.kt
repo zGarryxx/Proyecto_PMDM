@@ -3,6 +3,7 @@ package com.proyectosobres
 import DBcontrol
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -64,6 +65,10 @@ class Login : AppCompatActivity() {
         val cursor = db.rawQuery("SELECT * FROM usuario WHERE correo = ? AND password = ?", arrayOf(email, contrasena))
         val usuarioValido = cursor.count > 0
         cursor.close()
+
+        // Registro de depuración
+        Log.d("Login", "Email: $email, Contraseña: $contrasena, Usuario válido: $usuarioValido")
+
         return usuarioValido
     }
 
