@@ -2,6 +2,7 @@ package com.proyectosobres
 
 import DBcontrol
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -10,6 +11,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,6 +32,12 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
+        backgroundImage.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
         }
 
         val dbControl = DBcontrol(this)
@@ -184,5 +192,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IOException) {
             Log.e("GenerarCarta", "Error al guardar la carta", e)
         }
+
     }
 }
