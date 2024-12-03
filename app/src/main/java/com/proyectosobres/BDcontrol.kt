@@ -7,105 +7,18 @@ import android.util.Log
 class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_NAME = "database.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_NAME = "basededatosfutbol.db"
+        private const val DATABASE_VERSION = 2
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         Log.d("DBcontrol", "Creando las tablas de la base de datos...")
-
-        // Crear tabla equipo
-        val createEquipoTable = """
-            CREATE TABLE equipo (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nombre TEXT,
-                numeroDeJugadores INTEGER,
-                comunidadAutonoma TEXT,
-                clasificacion INTEGER,
-                logo TEXT
-            )
-        """
-        db.execSQL(createEquipoTable)
-
-        // Crear tabla jugador
-        val createJugadorTable = """
-            CREATE TABLE jugador (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nombre TEXT,
-                dorsal INTEGER,
-                posicion TEXT,
-                rareza TEXT,
-                equipoId INTEGER,
-                edad INTEGER,
-                fotoJugador TEXT,
-                FOREIGN KEY(equipoId) REFERENCES equipo(id)
-            )
-        """
-        db.execSQL(createJugadorTable)
-
-        // Crear tabla usuario
-        val createUsuarioTable = """
-        CREATE TABLE usuario (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            rol TEXT CHECK(rol IN ('usuario', 'admin')) DEFAULT 'usuario',
-            nombre TEXT,
-            apellido TEXT,
-            correo TEXT UNIQUE,
-            password TEXT,
-            equipoFavorito TEXT,
-            tokens INTEGER
-        )
-    """
-        db.execSQL(createUsuarioTable)
-
-        // Crear tabla usuarios_jugadores
-        val createUsuariosJugadoresTable = """
-        CREATE TABLE usuarios_jugadores (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            usuarioId INTEGER,
-            jugadorId INTEGER,
-            FOREIGN KEY(usuarioId) REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,
-            FOREIGN KEY(jugadorId) REFERENCES jugador(id) ON DELETE CASCADE ON UPDATE CASCADE
-        )
-    """
-        db.execSQL(createUsuariosJugadoresTable)
-
-        // Crear tabla tienda
-        val createTiendaTable = """
-        CREATE TABLE tienda (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombreSobre TEXT,
-            precioTokens INTEGER,
-            rareza TEXT CHECK(rareza IN ('común', 'épico', 'legendario')),
-            cantidadJugadores INTEGER,
-            descripcion TEXT
-        )
-    """
-        db.execSQL(createTiendaTable)
-
-        // Crear tabla usuarios_tienda
-        val createUsuariosTiendaTable = """
-        CREATE TABLE usuarios_tienda (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            usuarioId INTEGER,
-            productoId INTEGER,
-            FOREIGN KEY(usuarioId) REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,
-            FOREIGN KEY(productoId) REFERENCES tienda(id) ON DELETE CASCADE ON UPDATE CASCADE
-        )
-    """
-        db.execSQL(createUsuariosTiendaTable)
-
-        Log.d("DBcontrol", "Tablas creadas exitosamente")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.d("DBcontrol", "Actualizando base de datos de versión $oldVersion a $newVersion")
-        db.execSQL("DROP TABLE IF EXISTS jugador")
-        db.execSQL("DROP TABLE IF EXISTS equipo")
-        onCreate(db)
+
     }
 
-    // Insertar equipo
     fun insertEquipo(nombreEquipo: String, numeroDeJugadores: Int, comunidadAutonoma: String, clasificacion: Int, logo: String): Long {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -192,8 +105,6 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
             cursor.close()
         }
     }
-
-    // Vaciar la base de datos
     fun vaciarBaseDeDatos() {
         val db = writableDatabase
         db.execSQL("DELETE FROM jugador")
