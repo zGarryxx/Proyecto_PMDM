@@ -10,7 +10,7 @@ import android.widget.Toast
 import android.app.Activity
 
 class Signup : Activity() {
-
+    //Registro
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signup_estilo)

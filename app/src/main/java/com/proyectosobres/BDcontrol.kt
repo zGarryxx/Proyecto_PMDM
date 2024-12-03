@@ -18,7 +18,7 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
     }
-
+    //cambios en la base de datos
     fun insertEquipo(nombreEquipo: String, numeroDeJugadores: Int, comunidadAutonoma: String, clasificacion: Int, logo: String): Long {
         val db = writableDatabase
         val values = ContentValues().apply {
