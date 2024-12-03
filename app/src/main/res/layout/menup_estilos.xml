@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="449dp"
-        android:layout_height="165dp"
+        android:layout_height="100dp"
         android:background="#D3D3D3"
         android:backgroundTint="#483928"
         android:orientation="horizontal"
