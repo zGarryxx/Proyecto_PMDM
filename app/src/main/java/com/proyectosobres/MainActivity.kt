@@ -2,6 +2,7 @@ package com.proyectosobres
 
 import DBcontrol
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -10,6 +11,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -32,68 +34,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
+        backgroundImage.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
+
         val dbControl = DBcontrol(this)
-        val db = dbControl.writableDatabase
-        val equipoNombre = "Valladolid"
-        val equipoId = dbControl.obtenerEquipoId(equipoNombre) ?: dbControl.insertEquipo(
-            nombreEquipo = equipoNombre,
-            numeroDeJugadores = 25,
-            comunidadAutonoma = "Castilla y León",
-            clasificacion = 20,
-            logo = "valladolid_escudo.png"
-        )
-
-        if (equipoId != -1L) {
-            Log.d("DBcontrol", "Equipo Valladolid insertado con ID: $equipoId")
-        } else {
-            Log.e("DBcontrol", "Error al insertar el equipo Valladolid")
-        }
-
-// Lista de jugadores del equipo "Valladolid"
-        val jugadores = listOf(
-            Triple("Sergio León", "Delantero", "Común"),
-            Triple("Óscar Plano", "Mediocampo", "Común"),
-            Triple("Javi Sánchez", "Defensa", "Épica"),
-            Triple("Jordi Masip", "Portero", "Común"),
-            Triple("Monchu", "Mediocampo", "Común")
-        )
-
-// Inserción de jugadores para el equipo "Valladolid"
-        jugadores.forEachIndexed { index, jugador ->
-            val jugadorId = dbControl.insertJugador(
-                nombreJugador = jugador.first,
-                dorsal = when (index) {
-                    0 -> 7
-                    1 -> 10
-                    2 -> 24
-                    3 -> 1
-                    4 -> 14
-                    else -> (1..99).random()
-                },
-                posicion = jugador.second,
-                rareza = jugador.third,
-                equipoId = equipoId.toInt(),
-                edad = when (index) {
-                    0 -> 35
-                    1 -> 33
-                    2 -> 27
-                    3 -> 35
-                    4 -> 25
-                    else -> (20..40).random()
-                },
-                fotoJugador = "${jugador.first.replace(" ", "")}Valladolid.png"
-            )
-
-            if (jugadorId != -1L) {
-                Log.d("DBcontrol", "Jugador ${jugador.first} insertado con ID: $jugadorId")
-            } else {
-                Log.e("DBcontrol", "Error al insertar el jugador ${jugador.first}")
-            }
-        }
-
         val executor: ExecutorService = Executors.newSingleThreadExecutor()
         executor.execute {
-            for (idJugador in 80..199) {
+            for (idJugador in 75..199) {
                 try {
                     val datosJugador = dbControl.obtenerDatosJugador(idJugador)
 
@@ -184,5 +134,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IOException) {
             Log.e("GenerarCarta", "Error al guardar la carta", e)
         }
+
     }
 }
