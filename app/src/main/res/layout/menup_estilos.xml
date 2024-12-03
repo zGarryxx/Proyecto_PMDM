@@ -22,8 +22,8 @@
 
     <LinearLayout
         android:id="@+id/footer"
-        android:layout_width="449dp"
-        android:layout_height="100dp"
+        android:layout_width="416dp"
+        android:layout_height="101dp"
         android:background="#D3D3D3"
         android:backgroundTint="#483928"
         android:orientation="horizontal"
@@ -47,7 +47,13 @@
             android:contentDescription="Menu Principal"
             android:src="@drawable/home" />
 
-
+        <ImageView
+            android:id="@+id/login"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Menu Principal"
+            android:src="@drawable/img" />
 
     </LinearLayout>
 

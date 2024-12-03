@@ -1,27 +1,15 @@
 package com.proyectosobres
 
 import DBcontrol
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,131 +22,112 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val dbHelper = DBcontrol(this)
+        val db = dbHelper.writableDatabase
+
+        // Ejemplos de cartas
+        dbHelper.insertCarta("https://drive.google.com/file/d/1oYV9tQXmY2rP1_ta-XBlYz754_b-yedw/view?usp=drive_link", "Adri Embarba", "Espanyol", "comun", 32, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Ygd-MwIcyrULsGCECv8geefBqRdLzyNk/view?usp=drive_link", "Aitor Fernández", "Osasuna", "comun", 32, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1BTOx4-7KWjP7LkjiILjLfkpFT4DwM9y3/view?usp=drive_link", "Aleix Garcia", "Girona", "épica", 37, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1881mtoo4kgOebC2KaUEMR9_4L0QCGqif/view?usp=drive_link", "Alex Remiro", "Real Sociedad", "comun", 29, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1RC7j8xCoZuXMizrQ5_mBIlCrjmw0nacm/view?usp=drive_link", "Allan Nyom", "Leganes", "épica", 36, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1RFW0cOpf9iNgVl0XsdItx93XAf_1Xw0l/view?usp=drive_link", "Alvaro Garcia", "Rayo Vallecano", "comun", 31, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1sUPTpi2bpP8j7ouB6lntLH9iNjHApebl/view?usp=drive_link", "Alvaro Valles", "Las Palmas", "comun", 27, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1cKkJHm24gfOKI9iROCnsvhkplG_WQ0By/view?usp=drive_link", "Angel Correa", "Atletico de Madrid", "comun", 29, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1LPqbF0X1104eqIJrKTCGfZWcno566KdV/view?usp=drive_link", "Antonio Blanco", "Deportivo Alaves", "comun", 23, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1WiygPYHtnznmiTKuAx-_k03XPeeAYwT4/view?usp=drive_link", "Antonio Raillo", "Mayorca", "épica", 32, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1AlM04d-ank2UKqlJZ96wG-nldOqs52CT/view?usp=drive_link", "Arnau Martinez", "Girona", "épica", 33, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1fFBnAICXCoeclcS-WKI-3MrXUSVT-0oI/view?usp=drive_link", "Azpilicueta", "Atletico de Madrid", "épica", 35, "Lateral")
+        dbHelper.insertCarta("https://drive.google.com/file/d/11hDRMjBN5_6bAJvHF2wvFq7K5zSsy_h_/view?usp=drive_link", "Benjamin Lecomte", "Espanyol", "comun", 33, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1JmnLLHcPpKPA7I06gjJ7ercD3ZI1mYZ_/view?usp=drive_link", "Borja Bastón", "Leganes", "comun", 31, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1WNHmXVHjsh-CAwP1v4E6XSCqmVViZoGt/view?usp=drive_link", "Borja Iglesias", "Real Betis", "épica", 31, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1eB0PIRTEWe44fNYl4jCnb0Ak0sBfQ-OP/view?usp=drive_link", "Carles Aleña", "Getafe", "comun", 26, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/18RtFdVmzqnvrJDz34DmVqATzkEqHrTqp/view?usp=drive_link", "Carlos Benavidez", "Deportivo Alaves", "épica", 26, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/10lhuYfUgPAg5lEKRcIv4SDLfaXqanlMq/view?usp=drive_link", "Carvajal", "Real Madrid", "leyenda", 32, "Lateral Derecho")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1zNKEXJRf-sxiLnKLKyhtzybAM0OAe4CZ/view?usp=drive_link", "Chimy Avila", "Real Madrid", "épica", 31, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/13DMojgm5SMte2Q5T7XX7VlUr0pvBVWIX/view?usp=drive_link", "Claudio Bravo", "Real Betis", "leyenda", 41, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1eypXQ8X_RVacXZToKjB5Qq0ZZ8lpVbNk/view?usp=drive_link", "Cristhian Stuani", "Girona", "épica", 28, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1622Fa3f96oH4JIg9qmyi4_R4XaUmz94j/view?usp=drive_link", "Dani Parejo", "Villareal", "épica", 29, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1jJBUWuSHOxX2WzE4Q2234WEJdI9oAlVg/view?usp=drive_link", "David Garcia", "Osasuna", "épica", 28, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/14xpIarWpU2hXdupwNAWTE9LZwuAI6lXa/view?usp=drive_link", "David Silva", "Real Sociedad", "leyenda", 38, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1O8lsIcx6yn5ILQPwvtygJ72FiGDQMBTx/view?usp=drive_link", "David Soria", "Getafe", "comun", 31, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1WkEBcj1LnMiejwkplCzSjNs0LxEYgd_v/view?usp=drive_link", "Dimitri Foulquier", "Valencia", "comun", 31, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1BQzCo2wntcPDCe6U5RpAuHOGC3-6VyXr/view?usp=drive_link", "Djene Dakonam", "Getafe", "épica", 32, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1UYXHR5q1rmSVQC0U9i0L32sqmnSZKbH0/view?usp=drive_link", "Enes Ünal", "Getafe", "épica", 27, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1P815TJKEhSJFM4jrtkcxGkn-4Wxj0jA2/view?usp=drive_link", "Eric Curbelo", "Las Palmas", "comun", 30, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1dtjnh7-Q2FWudlDwxtdiJCbGN1ZQTTRu/view?usp=drive_link", "Fernando Pacheco", "Deportivo Alaves", "comun", 33, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1s0cldWZMqJHJC3CXJbSuMAQ-NXCJA3Ar/view?usp=drive_link", "Fran Beltran", "Celta de Vigo", "comun", 25, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1HyOv5HfDnNU7eqXkDoQKTdpFyl25RR-B/view?usp=drive_link", "Gabri Veiga", "Celta de Vigo", "épica", 22, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1MmLrEnKb6pq2a75XdlfulrofRxOTfXU4/view?usp=drive_link", "Gavi", "Barcelona", "comun", 20, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1bOLhMtyRG6pmg0bi2i72Isq09UZQiTbK/view?usp=drive_link", "Gerard Moreno", "Villareal", "épica", 33, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1s7iNHhcGdCWqiwRhjNABD0bWXqlSpG1w/view?usp=drive_link", "Giorgi Mamardashvili", "Villareal", "comun", 24, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1SmXO21xdKoW7WiFR2Xiol9jkSt3hGWB_/view?usp=drive_link", "Griezmann", "Atletico de Madrid", "leyenda", 33, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/18m7a3tv2mH9eHvqMobQBVgg-M6SE4Wy4/view?usp=drive_link", "Guido Rodriguez", "Real Betis", "épica", 30, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Va55kRGqkWcgxTDSROgWD9QyZxRqkwti/view?usp=drive_link", "Hugo Duro", "Valencia", "comun", 25, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1vhD3CFVuUBW7Yxb-y2MiWXTBHGrSh6hY/view?usp=drive_link", "Iago Aspas", "Celta de Vigo", "leyenda", 37, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1EC2hCrMxiyddApRhxnsVt2xypOogSfk4/view?usp=drive_link", "Iker Muniain", "Athletic de Bilbao", "leyenda", 27, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1tqUXk9EmgsJ_t5Ew2znn3PCw968u74kW/view?usp=drive_link", "Iñaki Williams", "Athletic de Bilbao", "épica", 23, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1eY0PWvpPYanrPvSLbiknvwzUa3I36K13/view?usp=drive_link", "Isi Palazon", "Rayo Vallecano", "épica", 29, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1HxfYUxYbVOdYdBEPxw7BN59u7zwZzDZP/view?usp=drive_link", "Ivan Cuellar", "Leganes", "comun", 40, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1rF3MfqTvU5GIMAg20-fm6I17QdN3ASHU/view?usp=drive_link", "Ivan Rakitic", "Sevilla", "leyenda", 36, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1i29Gt44Sf19jBvhI_yRC7tzn8JNXbf14/view?usp=drive_link", "Ivan Villar", "Celta de Vigo", "comun", 27, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1flO-e__oxiU546mTzr_I0MP6MGr2we2y/view?usp=drive_link", "Jan Oblak", "Atletico de Madrid", "épica", 31, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1dyVunStH9of7464GJB78USAgPpcfFZu1/view?usp=drive_link", "Jaume Costa", "Mayorca", "comun", 36, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/19Tt6-HCcIXuPl5Sw6Ncs4nEKMcesWazO/view?usp=drive_link", "Javi Galan", "Celta de Vigo", "comun", 29, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1AiugVxBzd8jmNERo2SUQrkFY0TjPBftt/view?usp=drive_link", "Javi Guerra", "Valencia", "épica", 21, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Ys3t-mTla4I3aI-5AWKjj2brPkbLnTx0/view?usp=drive_link", "Javi Sanchez", "Real Valladolid", "épica", 27, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Sqa0a0husnveSXRhqd5QEMViRBYtw-lJ/view?usp=drive_link", "Jesus Navas", "Sevilla", "leyenda", 38, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1UKGWswcXgcgoFwXwIZK9aqMAxzxNC6JW/view?usp=drive_link", "Jonathan Viera", "Las Palmas", "épica", 35, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/12qxhp4Gn0LQ-dDXJ9qk9wTrxpNP5i1Fq/view?usp=drive_link", "Jordi Masiq", "Real Valladolid", "comun", 35, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1YXYRrntmHHHPwn4Y0sQ1Li5xhiM5JWjo/view?usp=drive_link", "Jose Gaya", "Valencia", "épica", 29, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1hfDnhaEZ4SwTSaF81wiYWFNaYKP8YEZQ/view?usp=drive_link", "Youssef En-Nesyri", "Sevilla", "épica", 27, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1HbDrJCxNtnfcjiL5lz44XAvJi75V8Mnf/view?usp=sharing", "Yeray Álvarez", "Athletic del Bilbao", "épica", 23, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1t0eWJ2S99uICQJKd_op2QF265RFW98Hu/view?usp=sharing", "Víctor Laguardia", "Deportivo Alavés", "épica", 34, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1X7LGXysnNUnr4img73dtlrVTdHr23BFU/view?usp=sharing", "Vedat Muriqui", "Mallorca", "épica", 30, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1MknctmX8IVqi3z0B1fwJRLwnS9EqhkoO/view?usp=sharing", "Vallejo", "Real Madrid", "leyenda", 27, "Defensa Central")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1HbRSLnvDwYLVvvV1bK37QFKjwtUOR6eo/view?usp=sharing", "Unai Simón", "Athletic del Bilbao", "épica", 30, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1b01M-QKb888kVuTa93nTDcRoaYkK0W2H/view?usp=sharing", "Takefusa Kubo", "Real Sociedad", "épica", 23, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1_W6xARvGOZGpO2q0_eck0qByFAVsJdgN/view?usp=sharing", "Stole Dimitrievski", "Rayo Vallecano", "comun", 31, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1UpFBadj7PYwFjmbhaR4NdSb5tJhVQO4v/view?usp=sharing", "Sergio León", "Real Valladolid", "comun", 35, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1IahuYWWX3Ngql5pzCF98ZIViUJxY4TMX/view?usp=sharing", "Sergio González", "Leganés", "comun", 31, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1OdyTT6ZY0W2YeSHnH8Sa5ClZVqoKjO_G/view?usp=sharing", "Sergi Darder", "Espanyol", "épica", 30, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1J3y6WYOJ47RH85qB-aLV9OgYeBJ3wnFT/view?usp=sharing", "Sandro Ramírez", "Las Palmas", "épica", 29, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1CP547JJxQe9sjuLaG-aWWAKE9OJxIbWC/view?usp=sharing", "Samuel Chukwueze", "Villareal", "comun", 28, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1hQjyhNm4tKqAdIST69_6fOCG36chIVTD/view?usp=sharing", "Rubén Peña", "Osasuna", "comun", 30, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1xB8AwrU8L6uS2DHWOTkTWEtZgnr0BnYQ/view?usp=sharing", "Rubén Pardo", "Leganés", "épica", 32, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1SKjqOELgOn6kVVm712lb3VxYnUozySRs/view?usp=sharing", "Robin Le Normand", "Real Sociedad", "épica", 27, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1NAnwA2c-bf_40bmNYdyZf-D5mVoLTWxP/view?usp=sharing", "Raúl de Tomás", "Rayo Vallecano", "épica", 30, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1ov2w3ANS7hwjjCIb0UeGpds9rUC9spQc/view?usp=sharing", "Rajkovic", "Mallorca", "comun", 29, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1mqKf5BO-BMDNhbH1xCVLWqgKYETAxQWo/view?usp=sharing", "Pepe Reina", "Villareal", "leyenda", 24, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1gOUJOIXcjrRh9WZr4YQB1hEuyeBCf0nD/view?usp=sharing", "Paulo Gazzaniga", "Girona", "comun", 40, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1zmOuclEGYGBs5NHL8FdaR90A3qj7i1aP/view?usp=sharing", "Pau Torres", "Virrareal", "épica", 32, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/14shh6NVvRpt558e0T1B1t7WnaDQ8tsIS/view?usp=sharing", "Óscar Valentín", "Rayo Vallecano", "comun", 29, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1_AZvp9x1U1_NaZxuI7Gm-C9dUgddPamT/view?usp=sharing", "Óscar Plano", "Real Valladolid", "comun", 33, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1JP-xIbr1s3lo74PAptB2F-emJYgjS_pY/view?usp=sharing", "Nico Williams", "Athletic del Bilbao", "comun", 33, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1sG40DoSTYWYYo4H5bfimz_SbQFMgNHFP/view?usp=sharing", "Nabil Fekir", "Real Betis", "épica", 30, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/10XZOFkL7SoQngN_A_-Z4dTRmQLua97gG/view?usp=sharing", "Monchu", "Real Valladolid", "comun", 25, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1bYB_CNSHhiqT25Umr_lPdWlW1egX7f5V/view?usp=sharing", "Moi Gómez", "Osasuna", "comun", 32, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1OAQSVJEOar5KKGLMwgwNTlDrrGo32rOF/view?usp=sharing", "Mikel Oyarzabal", "Real Sociedad", "épica", 27, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Y-aqYIvwdKNtBq5GsgyQgnUWtSwnLVav/view?usp=sharing", "Marko Dmitrović", "Sevilla", "comun", 32, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1q3xPb7U-e1rNt5xJW0TB-UQxqzwTgZwj/view?usp=sharing", "Marcos Acuña", "Sevilla", "épica", 33, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1JWfjrWS0i2OwanDL-MjAOcZtJQvTo0FP/view?usp=sharing", "Maksimović", "Getafe", "comun", 29, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1BOxGBmd5IzySiymrqbyIPSk-8MEWIxbp/view?usp=sharing", "Lunin", "Real Madrid", "comun", 25, "Portero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/14tJ8v4UaxCF6DrrPxN9omBjK5m6oWs-N/view?usp=sharing", "Luis Rioja", "Alavés", "épica", 30, "Delantero")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1Z3OmuhBlpoaoF1zJTznfjdQdZgxjdB71/view?usp=sharing", "Leandro Cabrera", "Espanyol", "comun", 33, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1KhbQETt0eXSrF0yfj95iT0Nu4No887QE/view?usp=sharing", "Lamine Yamal", "Barcelona", "raro", 26, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1ScnLdRuAXnGkeIqwbEutr5LPrACNKB8P/view?usp=sharing", "Koke", "Atlético del Madrid", "épica", 32, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1ip7vITszqUuFa_4pR8pQEXsnXu79quTT/view?usp=sharing", "Kirian Rodríguez", "Las Palmas", "comun", 28, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1rpt5ahr3XiziZi6HbAUDVQfW-YVhV1np/view?usp=sharing", "Kang-in Lee", "Mallorca ", "épica", 23, "Mediocampo")
+        dbHelper.insertCarta("https://drive.google.com/file/d/19Ppq48NGcD7SAf2QWP8AgW-UjwDH4YZ-/view?usp=sharing", "Juanpe", "Girona ", "comun", 25, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/1G2bNM-gdgdmntwNGv8D-8h3qIC9_m5aA/view?usp=sharing", "Juan Miranda", "Real Betis", "comun", 24, "Defensa")
+        dbHelper.insertCarta("https://drive.google.com/file/d/170H4veYvDg-5aiaLEjsKnhB7RQY6PKgh/view?usp=sharing", "Joselu", "Espanyol ", "épica", 24, "Delantero")
+
+
+
         val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
         backgroundImage.setOnClickListener {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
-        }
-
-        val dbControl = DBcontrol(this)
-        val executor: ExecutorService = Executors.newSingleThreadExecutor()
-        executor.execute {
-            for (idJugador in 75..199) {
-                try {
-                    val datosJugador = dbControl.obtenerDatosJugador(idJugador)
-
-                    if (datosJugador != null) {
-                        Log.d("DatosJugador", "ID: $idJugador - Nombre: ${datosJugador["nombre_jugador"]}")
-                        runOnUiThread {
-                            generarCarta(datosJugador, this)
-                        }
-                    } else {
-                        Log.e("DatosJugador", "Jugador con ID $idJugador no encontrado")
-                    }
-                } catch (e: Exception) {
-                    Log.e("DatosJugador", "Error al obtener los datos del jugador con ID $idJugador", e)
-                }
-            }
-        }
-    }
-
-    fun generarCarta(datosJugador: Map<String, String>, context: Context) {
-        val ancho = 700
-        val alto = 700
-        val bitmap = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        val paint = Paint()
-
-        // Fondo principal
-        val rareza = datosJugador["rareza"] ?: "común"
-        val colorFondo = when (rareza.lowercase()) {
-            "común" -> Color.parseColor("#BDBDBD")
-            "raro" -> Color.parseColor("#2196F3")
-            "épica" -> Color.parseColor("#9C27B0")
-            "leyenda" -> Color.parseColor("#D4AF37")
-            else -> Color.parseColor("#FFFFFF")
-        }
-        paint.color = colorFondo
-        canvas.drawRect(0f, 0f, ancho.toFloat(), alto.toFloat(), paint)
-
-        paint.color = Color.BLACK
-        paint.strokeWidth = 10f
-        paint.style = Paint.Style.STROKE
-        canvas.drawRect(5f, 5f, (ancho - 5).toFloat(), (alto - 5).toFloat(), paint)
-        paint.style = Paint.Style.FILL // Restaurar estilo
-
-        // Imagen del jugador
-        try {
-            val imagenJugador = datosJugador["foto_jugador"]?.let {
-                BitmapFactory.decodeStream(context.assets.open(it))
-            }
-
-            imagenJugador?.let {
-                val jugadorScaled = Bitmap.createScaledBitmap(it, ancho - 20, alto / 2 - 20, false)
-                canvas.drawBitmap(jugadorScaled, 10f, 10f, null)
-            }
-        } catch (e: IOException) {
-            Log.e("GenerarCarta", "Error al cargar la imagen del jugador", e)
-        }
-
-        // Dibujar el nombre del jugador
-        paint.color = Color.WHITE
-        paint.textSize = 50f
-        paint.typeface = Typeface.DEFAULT_BOLD
-        paint.setShadowLayer(10f, 5f, 5f, Color.BLACK)
-
-        val nombreJugador = datosJugador["nombre_jugador"] ?: "Desconocido"
-        val textoXStart = 220f // Espacio desde el inicio para las palabras
-        val nombreY = alto / 2f + 50f // Colocar el nombre justo debajo de la mitad superior
-        canvas.drawText(nombreJugador, textoXStart, nombreY, paint)
-
-        // Logo del equipo
-        val logoWidth = 175
-        val logoHeight = 175
-        val espacioEntreLogoYPalabras = 20f // Margen entre el logo y las palabras
-
-        try {
-            val logoEquipo = datosJugador["logo"]?.let {
-                BitmapFactory.decodeStream(context.assets.open(it))
-            }
-
-            logoEquipo?.let {
-                val logoScaled = Bitmap.createScaledBitmap(it, logoWidth, logoHeight, false)
-                val logoX = 20f
-                val logoY = alto / 2f + 60f // Ajustar para bajar el logo más
-                canvas.drawBitmap(logoScaled, logoX, logoY, null)
-
-                // Texto al lado del logo (centrado verticalmente respecto al logo)
-                val textoCentroY = logoY + (logoHeight / 2f) +20f// Centrar texto verticalmente respecto al logo
-                paint.textSize = 40f
-                paint.setShadowLayer(5f, 2f, 2f, Color.BLACK)
-
-                val estadisticasTexto = listOf(
-                    "Edad: ${datosJugador["edad"] ?: "N/A"}",
-                    "Posición: ${datosJugador["posicion"] ?: "N/A"}",
-                    "Rareza: ${datosJugador["rareza"] ?: "N/A"}"
-                )
-
-                estadisticasTexto.forEachIndexed { index, texto ->
-                    val textoY = textoCentroY + (index - 1) * (paint.textSize + espacioEntreLogoYPalabras ) // Ajustar espacio entre líneas
-                    canvas.drawText(texto, textoXStart, textoY, paint)
-                }
-            }
-        } catch (e: IOException) {
-            Log.e("GenerarCarta", "Error al cargar el logo del equipo", e)
-        }
-
-        // Guardar la carta
-        val archivoSalida = File(context.getExternalFilesDir(null), "cartas/carta_${datosJugador["nombre_jugador"]}.png")
-        archivoSalida.parentFile?.mkdirs()
-
-        try {
-            val fos = FileOutputStream(archivoSalida)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.close()
-            Log.d("GenerarCarta", "Carta guardada en ${archivoSalida.absolutePath}")
-        } catch (e: IOException) {
-            Log.e("GenerarCarta", "Error al guardar la carta", e)
         }
     }
 }

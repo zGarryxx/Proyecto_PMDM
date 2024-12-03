@@ -84,7 +84,7 @@
                 android:layout_marginTop="16dp"
                 android:text="¿Ya tienes cuenta? Clicka aquí"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

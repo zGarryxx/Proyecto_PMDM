@@ -8,103 +8,96 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
 
     companion object {
         private const val DATABASE_NAME = "basededatosfutbol.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         Log.d("DBcontrol", "Creando las tablas de la base de datos...")
+
+        // Crear tabla usuarios
+        val createUsuariosTable = """
+            CREATE TABLE usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                correo TEXT NOT NULL,
+                password TEXT NOT NULL
+            )
+        """.trimIndent()
+        db.execSQL(createUsuariosTable)
+
+        // Crear tabla cartas
+        val createCartasTable = """
+        CREATE TABLE cartas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            imagen TEXT,
+            jugador TEXT,
+            equipo TEXT,
+            rareza TEXT CHECK(rareza IN ('comun', 'raro', 'épica', 'leyenda')),
+            edad INTEGER,
+            posicion TEXT
+        )
+    """.trimIndent()
+        db.execSQL(createCartasTable)
+
+        // Crear tabla intermedia usuario_cartas
+        val createUsuarioCartasTable = """
+            CREATE TABLE usuario_cartas (
+                usuario_id INTEGER,
+                carta_id INTEGER,
+                PRIMARY KEY (usuario_id, carta_id),
+                FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+                FOREIGN KEY (carta_id) REFERENCES cartas(id)
+            )
+        """.trimIndent()
+        db.execSQL(createUsuarioCartasTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-
-    }
-    //cambios en la base de datos
-    fun insertEquipo(nombreEquipo: String, numeroDeJugadores: Int, comunidadAutonoma: String, clasificacion: Int, logo: String): Long {
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put("nombre", nombreEquipo)
-            put("numeroDeJugadores", numeroDeJugadores)
-            put("comunidadAutonoma", comunidadAutonoma)
-            put("clasificacion", clasificacion)
-            put("logo", logo)
+        if (oldVersion < 3) {
+            // Actualizar la base de datos a la versión 3
+            db.execSQL("DROP TABLE IF EXISTS usuario_cartas")
+            db.execSQL("DROP TABLE IF EXISTS usuarios")
+            db.execSQL("DROP TABLE IF EXISTS cartas")
+            onCreate(db)
         }
-        val result = db.insert("equipo", null, values)
-        Log.d("DBcontrol", "Insertar equipo: Resultado = $result")
-        return result
-    }
-
-    // Insertar jugador
-    fun insertJugador(nombreJugador: String, dorsal: Int, posicion: String, rareza: String, equipoId: Int, edad: Int, fotoJugador: String): Long {
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put("nombre", nombreJugador)
-            put("dorsal", dorsal)
-            put("posicion", posicion)
-            put("rareza", rareza)
-            put("equipoId", equipoId)
-            put("edad", edad)
-            put("fotoJugador", fotoJugador)
-        }
-        val result = db.insert("jugador", null, values)
-        Log.d("DBcontrol", "Insertar jugador: Resultado = $result")
-        return result
     }
 
     // Insertar usuario
-    fun insertUsuario( correo: String, password: String ): Long {
+    fun insertUsuario(correo: String, password: String): Long {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("correo", correo)
             put("password", password)
         }
-        val result = db.insert("usuario", null, values)
+        val result = db.insert("usuarios", null, values)
         Log.d("DBcontrol", "Insertar usuario: Resultado = $result")
         return result
     }
 
-    // Obtener el ID del equipo por nombre
-    fun obtenerEquipoId(nombreEquipo: String): Long? {
-        val db = readableDatabase
-        val cursor = db.query("equipo", arrayOf("id"), "nombre = ?", arrayOf(nombreEquipo), null, null, null)
-        val id = if (cursor.moveToFirst()) cursor.getLong(cursor.getColumnIndexOrThrow("id")) else -1L
-        cursor.close()
-        Log.d("DBcontrol", "Obtener ID equipo: $id")
-        return id
-    }
-
-    // Obtener los datos de un jugador por ID
-    fun obtenerDatosJugador(idJugador: Int): Map<String, String>? {
-        val db = readableDatabase
-        val cursor = db.rawQuery("""
-            SELECT jugador.*, equipo.nombre AS nombre_equipo, equipo.logo AS logo
-            FROM jugador
-            LEFT JOIN equipo ON jugador.equipoId = equipo.id
-            WHERE jugador.id = ?
-        """, arrayOf(idJugador.toString()))
-
-        return if (cursor.moveToFirst()) {
-            mapOf(
-                "nombre_jugador" to cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
-                "dorsal" to cursor.getInt(cursor.getColumnIndexOrThrow("dorsal")).toString(),
-                "posicion" to cursor.getString(cursor.getColumnIndexOrThrow("posicion")),
-                "rareza" to cursor.getString(cursor.getColumnIndexOrThrow("rareza")),
-                "equipoId" to cursor.getInt(cursor.getColumnIndexOrThrow("equipoId")).toString(),
-                "edad" to cursor.getInt(cursor.getColumnIndexOrThrow("edad")).toString(),
-                "foto_jugador" to cursor.getString(cursor.getColumnIndexOrThrow("fotoJugador")),
-                "nombre_equipo" to cursor.getString(cursor.getColumnIndexOrThrow("nombre_equipo")),
-                "logo" to cursor.getString(cursor.getColumnIndexOrThrow("logo"))
-            )
-        } else {
-            null
-        }.also {
-            cursor.close()
-        }
-    }
-    fun vaciarBaseDeDatos() {
+    // Asignar carta a usuario
+    fun assignCartaToUsuario(usuarioId: Long, cartaId: Long): Long {
         val db = writableDatabase
-        db.execSQL("DELETE FROM jugador")
-        db.execSQL("DELETE FROM equipo")
-        db.close()
-        Log.d("DBcontrol", "Base de datos vaciada.")
+        val values = ContentValues().apply {
+            put("usuario_id", usuarioId)
+            put("carta_id", cartaId)
+        }
+        val result = db.insert("usuario_cartas", null, values)
+        Log.d("DBcontrol", "Asignar carta a usuario: Resultado = $result")
+        return result
+    }
+
+    // Insertar carta
+    fun insertCarta(imagen: String, jugador: String, equipo: String, rareza: String, edad: Int, posicion: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("imagen", imagen)
+            put("jugador", jugador)
+            put("equipo", equipo)
+            put("rareza", rareza)
+            put("edad", edad)
+            put("posicion", posicion)
+        }
+        val result = db.insert("cartas", null, values)
+        Log.d("DBcontrol", "Insertar carta: Resultado = $result")
+        return result
     }
 }

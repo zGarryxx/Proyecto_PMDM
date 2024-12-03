@@ -26,7 +26,12 @@ class MenuPrincipal : Activity() {
             startActivity(linkMenuPrincipal)
         }
 
-
+        // Enlace al login
+        val login: ImageView = findViewById(R.id.login)
+        login.setOnClickListener {
+            val linkLogin = Intent(this, Login::class.java)
+            startActivity(linkLogin)
+        }
 
         // Enlace a la pantalla para Abrir Sobre
         val abrirSobre: Button = findViewById(R.id.btnAbrirSobre)
