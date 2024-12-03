@@ -63,12 +63,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun generarCarta(datosJugador: Map<String, String>, context: Context) {
-        val ancho = 600
+        val ancho = 700
         val alto = 700
         val bitmap = Bitmap.createBitmap(ancho, alto, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val paint = Paint()
 
+        // Fondo principal
         val rareza = datosJugador["rareza"] ?: "común"
         val colorFondo = when (rareza.lowercase()) {
             "común" -> Color.parseColor("#BDBDBD")
@@ -77,52 +78,77 @@ class MainActivity : AppCompatActivity() {
             "leyenda" -> Color.parseColor("#D4AF37")
             else -> Color.parseColor("#FFFFFF")
         }
-
         paint.color = colorFondo
         canvas.drawRect(0f, 0f, ancho.toFloat(), alto.toFloat(), paint)
 
+        paint.color = Color.BLACK
+        paint.strokeWidth = 10f
+        paint.style = Paint.Style.STROKE
+        canvas.drawRect(5f, 5f, (ancho - 5).toFloat(), (alto - 5).toFloat(), paint)
+        paint.style = Paint.Style.FILL // Restaurar estilo
+
+        // Imagen del jugador
         try {
             val imagenJugador = datosJugador["foto_jugador"]?.let {
                 BitmapFactory.decodeStream(context.assets.open(it))
             }
 
             imagenJugador?.let {
-                val jugadorScaled = Bitmap.createScaledBitmap(it, ancho, alto / 2, false)
-                canvas.drawBitmap(jugadorScaled, 0f, 0f, null)
+                val jugadorScaled = Bitmap.createScaledBitmap(it, ancho - 20, alto / 2 - 20, false)
+                canvas.drawBitmap(jugadorScaled, 10f, 10f, null)
             }
         } catch (e: IOException) {
             Log.e("GenerarCarta", "Error al cargar la imagen del jugador", e)
         }
 
-        var logoBottom = 0f
+        // Dibujar el nombre del jugador
+        paint.color = Color.WHITE
+        paint.textSize = 50f
+        paint.typeface = Typeface.DEFAULT_BOLD
+        paint.setShadowLayer(10f, 5f, 5f, Color.BLACK)
+
+        val nombreJugador = datosJugador["nombre_jugador"] ?: "Desconocido"
+        val textoXStart = 220f // Espacio desde el inicio para las palabras
+        val nombreY = alto / 2f + 50f // Colocar el nombre justo debajo de la mitad superior
+        canvas.drawText(nombreJugador, textoXStart, nombreY, paint)
+
+        // Logo del equipo
+        val logoWidth = 175
+        val logoHeight = 175
+        val espacioEntreLogoYPalabras = 20f // Margen entre el logo y las palabras
+
         try {
             val logoEquipo = datosJugador["logo"]?.let {
                 BitmapFactory.decodeStream(context.assets.open(it))
             }
 
             logoEquipo?.let {
-                val logoScaled = Bitmap.createScaledBitmap(it, 120, 120, false)
+                val logoScaled = Bitmap.createScaledBitmap(it, logoWidth, logoHeight, false)
                 val logoX = 20f
-                val logoY = alto / 2f + 10f
+                val logoY = alto / 2f + 60f // Ajustar para bajar el logo más
                 canvas.drawBitmap(logoScaled, logoX, logoY, null)
-                logoBottom = logoY + 120f
+
+                // Texto al lado del logo (centrado verticalmente respecto al logo)
+                val textoCentroY = logoY + (logoHeight / 2f) +20f// Centrar texto verticalmente respecto al logo
+                paint.textSize = 40f
+                paint.setShadowLayer(5f, 2f, 2f, Color.BLACK)
+
+                val estadisticasTexto = listOf(
+                    "Edad: ${datosJugador["edad"] ?: "N/A"}",
+                    "Posición: ${datosJugador["posicion"] ?: "N/A"}",
+                    "Rareza: ${datosJugador["rareza"] ?: "N/A"}"
+                )
+
+                estadisticasTexto.forEachIndexed { index, texto ->
+                    val textoY = textoCentroY + (index - 1) * (paint.textSize + espacioEntreLogoYPalabras ) // Ajustar espacio entre líneas
+                    canvas.drawText(texto, textoXStart, textoY, paint)
+                }
             }
         } catch (e: IOException) {
             Log.e("GenerarCarta", "Error al cargar el logo del equipo", e)
         }
 
-        val textoInicioY = logoBottom + 50f
-        paint.color = Color.WHITE
-        paint.textSize = 60f
-        paint.typeface = Typeface.DEFAULT_BOLD
-        canvas.drawText(datosJugador["nombre_jugador"] ?: "Desconocido", 50f, textoInicioY, paint)
-
-        paint.textSize = 40f
-        val estadisticasInicioY = textoInicioY + 60f
-        canvas.drawText("Edad: ${datosJugador["edad"]}", 50f, estadisticasInicioY, paint)
-        canvas.drawText("Posición: ${datosJugador["posicion"]}", 50f, estadisticasInicioY + 50f, paint)
-        canvas.drawText("Rareza: ${datosJugador["rareza"]}", 50f, estadisticasInicioY + 100f, paint)
-
+        // Guardar la carta
         val archivoSalida = File(context.getExternalFilesDir(null), "cartas/carta_${datosJugador["nombre_jugador"]}.png")
         archivoSalida.parentFile?.mkdirs()
 
@@ -134,6 +160,5 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IOException) {
             Log.e("GenerarCarta", "Error al guardar la carta", e)
         }
-
     }
 }

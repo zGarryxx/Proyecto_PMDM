@@ -7,16 +7,16 @@
     tool:context=".Login">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="333dp"
+        android:layout_height="498dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="#D6AC5D"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintWidth_percent="0.81"
-        app:layout_constraintHeight_percent="0.55">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.55"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.81">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -33,48 +33,49 @@
                 android:textColor="#000000"
                 android:textSize="40sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/Email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:autofillHints=""
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:padding="12dp"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="40dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <EditText
                 android:id="@+id/Contraseña"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:autofillHints=""
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="12dp"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/Email"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Email" />
 
             <Button
                 android:id="@+id/btnAcceder"
                 android:layout_width="293dp"
                 android:layout_height="89dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="76dp"
                 android:backgroundTint="#483928"
                 android:text="Acceder"
                 android:textColor="#FFFFFF"
                 android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.448"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/Contraseña" />
 
@@ -84,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="¿No estás registrado? Clicka aquí"
+                android:text="¿No estás registrado? Click aquí"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
