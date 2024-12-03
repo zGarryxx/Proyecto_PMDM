@@ -3,6 +3,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.proyectosobres.Carta
 
 class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -99,5 +100,26 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         val result = db.insert("cartas", null, values)
         Log.d("DBcontrol", "Insertar carta: Resultado = $result")
         return result
+    }
+
+    fun cartaExists(jugador: String): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT 1 FROM cartas WHERE jugador = ?", arrayOf(jugador))
+        val exists = cursor.count > 0
+        cursor.close()
+        return exists
+    }
+
+    fun updateCarta(carta: Carta) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("imagen", carta.imagen)
+            put("jugador", carta.jugador)
+            put("equipo", carta.equipo)
+            put("rareza", carta.rareza)
+            put("edad", carta.edad)
+            put("posicion", carta.posicion)
+        }
+        db.update("cartas", values, "jugador = ?", arrayOf(carta.jugador))
     }
 }
