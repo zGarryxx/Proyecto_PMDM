@@ -65,16 +65,9 @@ class Signup : Activity() {
     }
 
     // Crear usuario
+    // Crear usuario
     private fun crearUsuario(email: String, contrasena: String): Long {
-        val db = dbcontrol.readableDatabase
-        val valores = ContentValues().apply {
-            put("correo", email)
-            put("password", contrasena)
-        }
-
-        val resultado = db.insert("usuario", null, valores)
-        Log.d("DBcontrol", "Insertar usuario: Resultado = $resultado")
-        return resultado
+        return dbcontrol.insertUsuario(email, contrasena)
     }
 
     // Comprobar si el email ya está registrado
