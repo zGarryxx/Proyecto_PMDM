@@ -51,16 +51,11 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
     }
 
     // Insertar usuario
-    fun insertUsuario(nombre: String, apellido: String, correo: String, password: String, equipoFavorito: String, tokens: Int): Long {
+    fun insertUsuario( correo: String, password: String ): Long {
         val db = writableDatabase
         val values = ContentValues().apply {
-            put("rol", "usuario")
-            put("nombre", nombre)
-            put("apellido", apellido)
             put("correo", correo)
             put("password", password)
-            put("equipoFavorito", equipoFavorito)
-            put("tokens", tokens)
         }
         val result = db.insert("usuario", null, values)
         Log.d("DBcontrol", "Insertar usuario: Resultado = $result")
