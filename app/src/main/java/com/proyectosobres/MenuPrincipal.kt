@@ -31,7 +31,7 @@ class MenuPrincipal : Activity() {
         // Enlace a la pantalla para Abrir Sobre
         val abrirSobre: Button = findViewById(R.id.btnAbrirSobre)
         abrirSobre.setOnClickListener {
-            val linkAbrirSobre = Intent(this, SobreAbierto::class.java)
+            val linkAbrirSobre = Intent(this, AperturaSobre::class.java)
             startActivity(linkAbrirSobre)
         }
     }
