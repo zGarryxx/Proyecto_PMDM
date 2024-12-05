@@ -140,6 +140,31 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         return images
     }
 
+    fun getAllCards(): List<String> {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT imagen FROM cartas", null)
+        val images = mutableListOf<String>()
+        if (cursor.moveToFirst()) {
+            do {
+                images.add(cursor.getString(cursor.getColumnIndexOrThrow("imagen")))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return images
+    }
 
-
+    fun getCardsByRarity(rarity: String): List<String> {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT imagen FROM cartas WHERE rareza = ?", arrayOf(rarity))
+        val images = mutableListOf<String>()
+        if (cursor.moveToFirst()) {
+            do {
+                val image = cursor.getString(cursor.getColumnIndexOrThrow("imagen"))
+                images.add(image)
+                Log.d("DBcontrol", "Imagen: $image") // Agregar log para ver los valores
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return images
+    }
 }

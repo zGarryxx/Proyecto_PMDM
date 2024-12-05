@@ -62,7 +62,7 @@ class Login : AppCompatActivity() {
     // Comprobar usuario
     private fun comprobarUsuario(email: String, contrasena: String): Boolean {
         val db = dbcontrol.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM usuario WHERE correo = ? AND password = ?", arrayOf(email, contrasena))
+        val cursor = db.rawQuery("SELECT * FROM usuarios WHERE correo = ? AND password = ?", arrayOf(email, contrasena))
         val usuarioValido = cursor.count > 0
         cursor.close()
 
