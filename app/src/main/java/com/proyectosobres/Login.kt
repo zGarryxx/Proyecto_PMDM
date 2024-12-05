@@ -32,18 +32,16 @@ class Login : AppCompatActivity() {
             val email = mail.text.toString()
             val contrasena = password.text.toString()
 
-            // Comprobación de campos vacíos
             if (!mailValido(email)) {
                 Toast.makeText(this, "Por favor, introduce un email válido", Toast.LENGTH_SHORT).show()
             } else if (!contrasenaValida(contrasena)) {
                 Toast.makeText(this, "La contraseña debe tener entre 8 y 30 caracteres, incluyendo números, letras mayúsculas y minúsculas", Toast.LENGTH_LONG).show()
             } else {
-                val usuarioValido = comprobarUsuario(email, contrasena)
-                if (usuarioValido) {
+                val userId = comprobarUsuario(email, contrasena)
+                if (userId != null) {
                     Toast.makeText(this, "Inicio de sesión correcto", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MenuPrincipal::class.java).apply {
-                        putExtra("correo", email)
-                        putExtra("password", contrasena)
+                        putExtra("userId", userId)
                     }
                     startActivity(intent)
                 } else {
@@ -59,18 +57,22 @@ class Login : AppCompatActivity() {
             startActivity(linkSignup)
         }
     }
-    // Comprobar usuario
-    private fun comprobarUsuario(email: String, contrasena: String): Boolean {
+
+    private fun comprobarUsuario(email: String, contrasena: String): Int? {
         val db = dbcontrol.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM usuarios WHERE correo = ? AND password = ?", arrayOf(email, contrasena))
-        val usuarioValido = cursor.count > 0
+        val cursor = db.rawQuery("SELECT id FROM usuarios WHERE correo = ? AND password = ?", arrayOf(email, contrasena))
+        var userId: Int? = null
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+        }
         cursor.close()
 
         // Registro de depuración
-        Log.d("Login", "Email: $email, Contraseña: $contrasena, Usuario válido: $usuarioValido")
+        Log.d("Login", "Email: $email, Contraseña: $contrasena, Usuario válido: ${userId != null}")
 
-        return usuarioValido
+        return userId
     }
+
 
     // Validar email
     private fun mailValido(email: String): Boolean {

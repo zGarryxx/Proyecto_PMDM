@@ -123,34 +123,48 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
         db.update("cartas", values, "jugador = ?", arrayOf(carta.jugador))
     }
 
-    fun getRandomCartas(limit: Int): List<String> {
+    fun getRandomCartasWithIds(limit: Int): List<Pair<Int, String>> {
         val db = this.readableDatabase
         val cursor = db.rawQuery("""
-        SELECT imagen FROM cartas
+        SELECT id, imagen FROM cartas
         ORDER BY RANDOM() LIMIT ?
-    """, arrayOf(limit.toString())) // Seleccionamos limit cartas aleatorias
+    """, arrayOf(limit.toString()))
 
-        val images = mutableListOf<String>()
+        val cartas = mutableListOf<Pair<Int, String>>()
         if (cursor.moveToFirst()) {
             do {
-                images.add(cursor.getString(cursor.getColumnIndexOrThrow("imagen")))
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val imagen = cursor.getString(cursor.getColumnIndexOrThrow("imagen"))
+                cartas.add(Pair(id, imagen))
             } while (cursor.moveToNext())
         }
         cursor.close()
-        return images
+        return cartas
     }
 
-    fun getAllCards(): List<String> {
+    fun getAllCards(userId: Int): List<Pair<String, Boolean>> {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT imagen FROM cartas", null)
-        val images = mutableListOf<String>()
+        val cursor = db.rawQuery("SELECT id, imagen FROM cartas", null)
+
+        val cards = mutableListOf<Pair<String, Boolean>>()
         if (cursor.moveToFirst()) {
             do {
-                images.add(cursor.getString(cursor.getColumnIndexOrThrow("imagen")))
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val image = cursor.getString(cursor.getColumnIndexOrThrow("imagen"))
+                val isCollected = isCardCollectedByUser(id, userId)
+                cards.add(Pair(image, isCollected))
             } while (cursor.moveToNext())
         }
         cursor.close()
-        return images
+        return cards
+    }
+
+    fun isCardCollectedByUser(cardId: Int, userId: Int): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT 1 FROM usuario_cartas WHERE carta_id = ? AND usuario_id = ?", arrayOf(cardId.toString(), userId.toString()))
+        val isCollected = cursor.count > 0
+        cursor.close()
+        return isCollected
     }
 
     fun getCardsByRarity(rarity: String): List<String> {

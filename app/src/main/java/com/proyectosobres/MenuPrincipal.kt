@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,12 +22,13 @@ class MenuPrincipal : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menup_estilos)
+        val userId = intent.getIntExtra("userId", -1)
+        Log.d("MenuPrincipal", "userId: $userId")
 
         timerTextView = findViewById(R.id.timerTextView)
         btnAbrirSobre = findViewById(R.id.btnAbrirSobre)
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE)
 
-        // Restaurar tiempo desde SharedPreferences
         val endTime = sharedPreferences.getLong("endTime", 0)
         if (endTime > 0) {
             timeLeftInMillis = endTime - System.currentTimeMillis()
@@ -39,6 +41,7 @@ class MenuPrincipal : Activity() {
         coleccion.setOnClickListener {
             saveTimeRemaining()
             val linkColeccion = Intent(this, Coleccion::class.java)
+            linkColeccion.putExtra("userId", userId) // Pass userId to Coleccion
             startActivity(linkColeccion)
         }
 
@@ -46,6 +49,7 @@ class MenuPrincipal : Activity() {
         home.setOnClickListener {
             saveTimeRemaining()
             val linkMenuPrincipal = Intent(this, MenuPrincipal::class.java)
+            linkMenuPrincipal.putExtra("userId", userId) // Pass userId to MenuPrincipal
             startActivity(linkMenuPrincipal)
         }
 
@@ -53,17 +57,19 @@ class MenuPrincipal : Activity() {
         login.setOnClickListener {
             saveTimeRemaining()
             val linkLogin = Intent(this, Login::class.java)
+            linkLogin.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(linkLogin)
+            finish()
         }
 
         val abrirSobre: Button = findViewById(R.id.btnAbrirSobre)
         abrirSobre.setOnClickListener {
             if (timeLeftInMillis == 0L) {
-                // Reiniciar el temporizador y abrir el sobre
-                resetTimerAndOpenSobre()
+                resetTimerAndOpenSobre(userId)
             } else {
                 saveTimeRemaining()
-                val linkAbrirSobre = Intent(this, AperturaSobre::class.java)
+                val linkAbrirSobre = Intent(this, SobreAbierto::class.java)
+                linkAbrirSobre.putExtra("userId", userId) // Pass userId to SobreAbierto
                 startActivity(linkAbrirSobre)
             }
         }
@@ -73,7 +79,6 @@ class MenuPrincipal : Activity() {
 
     override fun onResume() {
         super.onResume()
-        // Restaurar tiempo restante al volver a la app
         val endTime = sharedPreferences.getLong("endTime", 0)
         if (endTime > 0) {
             timeLeftInMillis = endTime - System.currentTimeMillis()
@@ -122,16 +127,16 @@ class MenuPrincipal : Activity() {
         editor.apply()
     }
 
-    private fun resetTimerAndOpenSobre() {
-        // Reiniciar el temporizador
+    private fun resetTimerAndOpenSobre(userId: Int) {
+
         timeLeftInMillis = 3 * 60 * 1000
         saveTimeRemaining()
 
-        // Iniciar la actividad "AperturaSobre"
+
         val linkAbrirSobre = Intent(this, AperturaSobre::class.java)
+        linkAbrirSobre.putExtra("userId", userId) // Pass userId to SobreAbierto
         startActivity(linkAbrirSobre)
 
-        // Reiniciar el temporizador
         startCountDownTimer()
     }
 }

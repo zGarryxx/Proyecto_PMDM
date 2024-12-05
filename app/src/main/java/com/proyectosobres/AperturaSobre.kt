@@ -30,7 +30,9 @@ class AperturaSobre : AppCompatActivity() {
                 }
 
                 override fun onAnimationEnd(animation: Animation) {
+                    val userId = intent.getIntExtra("userId", -1)
                     val intent = Intent(this@AperturaSobre, SobreAbierto::class.java)
+                    intent.putExtra("userId", userId) // Pass userId to SobreAbierto
                     startActivity(intent)
                 }
 

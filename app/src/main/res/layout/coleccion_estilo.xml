@@ -12,6 +12,7 @@
         android:layout_height="58dp"
         android:layout_margin="16dp"
         android:layout_marginTop="28dp"
+        android:background="#483928"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +23,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="96dp"
+        android:layout_marginBottom="100dp"
         android:padding="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/spinnerFilter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:spanCount="3"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="-2dp" />
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="416dp"
+        android:layout_height="101dp"
+        android:background="#D3D3D3"
+        android:backgroundTint="#483928"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/coleccion"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Coleccion"
+            android:src="@drawable/cartas" />
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Menu Principal"
+            android:src="@drawable/home" />
+
+        <ImageView
+            android:id="@+id/login"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Menu Principal"
+            android:src="@drawable/img" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

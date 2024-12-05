@@ -48,7 +48,7 @@ class Signup : Activity() {
                 val resultado = crearUsuario(email, password)
                 if (resultado != -1L) {
                     Toast.makeText(this, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show()
-                    val linkMenu = Intent(this, MenuPrincipal::class.java)
+                    val linkMenu = Intent(this, Login::class.java)
                     startActivity(linkMenu)
                 } else {
                     Toast.makeText(this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show()

@@ -2,11 +2,13 @@ package com.proyectosobres
 
 import DBcontrol
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +19,7 @@ class Coleccion : Activity() {
     private lateinit var adapter: ImageAdapter
     private lateinit var spinnerFilter: Spinner
     private lateinit var dbControl: DBcontrol
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,8 @@ class Coleccion : Activity() {
         dbControl = DBcontrol(this)
 
         recyclerView.layoutManager = GridLayoutManager(this, 3)
+
+        userId = intent.getIntExtra("userId", -1)
 
         val images = getAllCards()
         adapter = ImageAdapter(this, images)
@@ -64,13 +69,37 @@ class Coleccion : Activity() {
                 // No hacer nada
             }
         }
+
+        val coleccion: ImageView = findViewById(R.id.coleccion)
+        coleccion.setOnClickListener {
+            val linkColeccion = Intent(this, Coleccion::class.java)
+            linkColeccion.putExtra("userId", userId)
+            startActivity(linkColeccion)
+        }
+
+        val home: ImageView = findViewById(R.id.home)
+        home.setOnClickListener {
+            val linkMenuPrincipal = Intent(this, MenuPrincipal::class.java)
+            linkMenuPrincipal.putExtra("userId", userId)
+            startActivity(linkMenuPrincipal)
+        }
+
+        val login: ImageView = findViewById(R.id.login)
+        login.setOnClickListener {
+            val linkLogin = Intent(this, Login::class.java)
+            linkLogin.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(linkLogin)
+            finish()
+        }
     }
 
-    private fun getAllCards(): List<String> {
-        return dbControl.getAllCards()
+    private fun getAllCards(): List<Pair<String, Boolean>> {
+        return dbControl.getAllCards(userId)
     }
 
-    private fun getCardsByRarity(rarity: String): List<String> {
-        return dbControl.getCardsByRarity(rarity)
+    private fun getCardsByRarity(rarity: String): List<Pair<String, Boolean>> {
+        return dbControl.getAllCards(userId).filter { card ->
+            dbControl.getCardsByRarity(rarity).contains(card.first)
+        }
     }
 }
