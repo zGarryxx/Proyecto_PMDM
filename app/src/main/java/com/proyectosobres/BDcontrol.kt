@@ -161,7 +161,7 @@ class DBcontrol(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, nul
             do {
                 val image = cursor.getString(cursor.getColumnIndexOrThrow("imagen"))
                 images.add(image)
-                Log.d("DBcontrol", "Imagen: $image") // Agregar log para ver los valores
+                Log.d("DBcontrol", "Image: $image, Rarity: $rarity")
             } while (cursor.moveToNext())
         }
         cursor.close()

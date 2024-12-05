@@ -3,6 +3,7 @@ package com.proyectosobres
 import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,6 @@ class ImageAdapter(private val context: Context, private var images: List<String
             .load(imagePath)
             .into(holder.imageView)
 
-        // Apply gray filter
         val colorMatrix = ColorMatrix()
         colorMatrix.setSaturation(0f)
         val filter = ColorMatrixColorFilter(colorMatrix)
@@ -36,6 +36,7 @@ class ImageAdapter(private val context: Context, private var images: List<String
     }
 
     fun updateData(newImages: List<String>) {
+        Log.d("ImageAdapter", "Updating data with ${newImages.size} images: $newImages")
         images = newImages
         notifyDataSetChanged()
     }
